@@ -8,6 +8,9 @@
 
     <title>Web Workers basic example</title>
 
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,10 +18,9 @@
 </head>
 
 <body ng-app="app">
-    <div ng-controller="MainCtrl as main" style="float:left;">
+    <div ng-controller="MainCtrl as main" style="float:left;" id="test">
         <!-- <h1>Web<br>Workers<br>basic<br>example</h1> -->
         <div class="controls" tabindex="0">
-
             <form>
                 <div>
                     <label for="number1">Multiply number 1: </label>
@@ -29,11 +31,18 @@
                     <input type="text" id="number2" value="0">
                 </div>
                 <div>
-                    <button ng-click="main.submit()" ng-disabled="main.submitted" ng-class="{submitted: main.submitted}">Submit</button>
+                    <button ng-click="main.submit()" ng-disabled="main.submitted" ng-class="{submitted: main.submitted}">
+                        <span>Submit</span>
+                    </button>
+                    <span ng-show="main.submitted"><i class="fa fa-spinner fa-spin" style="font-size:30px;color:blue;"></i></span>
                 </div>
             </form>
 
             <p class="result">Result: 0</p>
+
+            <div>
+                <progressbar value="main.progress"></progressbar>
+            </div>
 
         </div>
     </div>
@@ -53,16 +62,22 @@
                 </div>
                 <div>
                     <button ng-click="second.submit()" ng-disabled="second.submitted" ng-class="{submitted: second.submitted}">Submit</button>
+                    <span ng-show="second.submitted"><i class="fa fa-spinner fa-spin" style="font-size:30px;color:blue;"></i></span>
                 </div>
             </form>
 
             <p class="result">Result: 0</p>
 
+            <div class="col-sm-4">
+                <progressbar value="second.progress"></progressbar>
+            </div>
         </div>
+
     </div>
 
 </body>
-<script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="main.js"></script>
 
 </html>

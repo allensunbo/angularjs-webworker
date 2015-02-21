@@ -40,19 +40,22 @@ if (!!window.Worker) {
         return {};
     }
 
-    angular.module('app', [])
+    angular.module('app', ['ui.bootstrap'])
         .controller('MainCtrl', function($scope) {
             var myWorker = getWorker();
             var vm = this;
+            vm.progress = 0;
             vm.submit = function() {
                 // compute();
                 vm.submitted = true;
+                vm.progress = 0;
                 myWorker.postMessage({});
                 console.log('Message posted to worker');
             };
 
             myWorker.onmessage = function(e) {
                 vm.submitted = false;
+                vm.progress = 100;
                 console.log('Message received from worker');
                 $scope.$apply();
             }
@@ -60,6 +63,7 @@ if (!!window.Worker) {
         .controller('SecondCtrl', function($scope) {
             var myWorker = getWorker();
             var vm = this;
+            vm.progress = 0;
             vm.submit = function() {
                 // compute();
                 vm.submitted = true;
