@@ -18,8 +18,31 @@
 </head>
 
 <body ng-app="app">
-    <div ng-controller="MainCtrl as main" style="float:left;" id="test">
+    <div ng-controller="FirstCtrl as first" id="test" class="col-sm-4">
         <!-- <h1>Web<br>Workers<br>basic<br>example</h1> -->
+        <div class="controls" tabindex="0">
+            <form>
+                <div>
+                    <label for="number1">Multiply number 1: </label>
+                    <input type="text" id="number1" value="0">
+                </div>
+                <div>
+                    <label for="number2">Multiply number 2: </label>
+                    <input type="text" id="number2" value="0">
+                </div>
+                <div>
+                    <button ng-click="first.submit()" ng-disabled="first.submitted" ng-class="{submitted: first.submitted}">
+                        <span>Submit</span>
+                    </button>
+                    <span ng-show="first.submitted"><i class="fa fa-spinner fa-spin" style="font-size:30px;color:blue;"></i></span>
+                </div>
+            </form>
+
+            <p class="result">Result: 0</p>
+        </div>
+    </div>
+
+    <div ng-controller="MainCtrl as main" class="col-sm-4">
         <div class="controls" tabindex="0">
             <form>
                 <div>
@@ -39,15 +62,10 @@
             </form>
 
             <p class="result">Result: 0</p>
-
-            <div>
-                <progressbar value="main.progress"></progressbar>
-            </div>
-
         </div>
     </div>
 
-    <div ng-controller="SecondCtrl as second" style="float:right;">
+    <div ng-controller="SecondCtrl as second" class="col-sm-4">
         <!-- <h1>Web<br>Workers<br>basic<br>example</h1> -->
         <div class="controls" tabindex="0">
 
@@ -67,10 +85,6 @@
             </form>
 
             <p class="result">Result: 0</p>
-
-            <div class="col-sm-4">
-                <progressbar value="second.progress"></progressbar>
-            </div>
         </div>
 
     </div>
