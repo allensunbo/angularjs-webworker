@@ -1,4 +1,9 @@
 onmessage = function(e) {
+    var workerResult = compute();
+    postMessage(workerResult);
+}
+
+function compute() {
     console.log('submit clicked');
     for (var i = 0; i < 10000000; i++) {
         for (var j = 0; j < 1000; j++) {
@@ -6,6 +11,5 @@ onmessage = function(e) {
         }
     }
     console.log('computation done with i=' + i);
-    var workerResult = {};
-    postMessage(workerResult);
+    return {};
 }

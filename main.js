@@ -29,18 +29,46 @@ if (!!window.Worker) {
         return new Worker("angular-worker.js");
     };
 
+    function compute() {
+        console.log('submit clicked');
+        for (var i = 0; i < 10000000; i++) {
+            for (var j = 0; j < 1000; j++) {
+                var p = (i * j) % (i + j);
+            }
+        }
+        console.log('computation done with i=' + i);
+        return {};
+    }
+
     angular.module('app', [])
         .controller('MainCtrl', function($scope) {
             var myWorker = getWorker();
-
-            $scope.submit = function() {
-                $scope.submitted = true;
+            var vm = this;
+            vm.submit = function() {
+                // compute();
+                vm.submitted = true;
                 myWorker.postMessage({});
                 console.log('Message posted to worker');
             };
 
             myWorker.onmessage = function(e) {
-                $scope.submitted = false;
+                vm.submitted = false;
+                console.log('Message received from worker');
+                $scope.$apply();
+            }
+        })
+        .controller('SecondCtrl', function($scope) {
+            var myWorker = getWorker();
+            var vm = this;
+            vm.submit = function() {
+                // compute();
+                vm.submitted = true;
+                myWorker.postMessage({});
+                console.log('Message posted to worker');
+            };
+
+            myWorker.onmessage = function(e) {
+                vm.submitted = false;
                 console.log('Message received from worker');
                 $scope.$apply();
             }
