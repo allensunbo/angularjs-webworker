@@ -41,7 +41,7 @@ if (!!window.Worker) {
     }
 
     angular.module('app', ['ui.bootstrap'])
-        .controller('FirstCtrl', function($scope) {
+        .controller('FirstCtrl', function($scope, $rootScope) {
             var myWorker = getWorker();
             var vm = this;
             vm.progress = 0;
@@ -50,6 +50,7 @@ if (!!window.Worker) {
                 vm.submitted = true;
                 vm.progress = 0;
                 myWorker.postMessage({});
+                $rootScope.$broadcast('FirstCtrlRun');
                 console.log('Message posted to worker');
             };
 
@@ -58,9 +59,12 @@ if (!!window.Worker) {
                 vm.progress = 100;
                 console.log('Message received from worker');
                 $scope.$apply();
+                $rootScope.$broadcast('FirstCtrlResult', {
+                    'result': 20
+                });
             }
         })
-        .controller('SecondCtrl', function($scope) {
+        .controller('SecondCtrl', function($scope, $rootScope) {
             var myWorker = getWorker();
             var vm = this;
             vm.progress = 0;
@@ -68,6 +72,7 @@ if (!!window.Worker) {
                 // compute();
                 vm.submitted = true;
                 myWorker.postMessage({});
+                $rootScope.$broadcast('SecondCtrlRun');
                 console.log('Message posted to worker');
             };
 
@@ -75,25 +80,49 @@ if (!!window.Worker) {
                 vm.submitted = false;
                 console.log('Message received from worker');
                 $scope.$apply();
+                $rootScope.$broadcast('SecondCtrlResult', {
+                    'result': 30
+                });
             }
         })
         .controller('MainCtrl', function($scope) {
-            var myWorker = getWorker();
             var vm = this;
-            vm.progress = 0;
-            vm.submit = function() {
-                // compute();
-                vm.submitted = true;
-                vm.progress = 0;
-                myWorker.postMessage({});
-                console.log('Message posted to worker');
-            };
+            //vm.firstResult = vm.secondResult = undefined;
+            vm.finalResult = undefined;
 
-            myWorker.onmessage = function(e) {
-                vm.submitted = false;
-                vm.progress = 100;
-                console.log('Message received from worker');
-                $scope.$apply();
-            }
+            $scope.$on('FirstCtrlRun', function(event, data) {
+                vm.firstResult = undefined;
+                vm.finalResult = undefined;
+            });
+
+            $scope.$on('SecondCtrlRun', function(event, data) {
+                vm.secondResult = undefined;
+                vm.finalResult = undefined;
+            });
+
+            $scope.$on('FirstCtrlResult', function(event, data) {
+                vm.firstResult = data.result;
+                processResults(vm, $scope);
+            });
+
+            $scope.$on('SecondCtrlResult', function(event, data) {
+                vm.secondResult = data.result;
+                processResults(vm, $scope);
+            });
+
         })
+
+    // when we reference scope variables, use vm since we use controller as syntax, otherwise it does not work as expected
+    // we only use $scope when do $apply
+    function processResults(vm, $scope) {
+        console.log(vm.firstResult);
+        console.log(vm.secondResult);
+        $scope.$apply(function() {
+            if (vm.firstResult && vm.secondResult) {
+                vm.finalResult = (vm.firstResult * vm.secondResult);
+                console.info(vm.finalResult);
+                vm.firstResult = vm.secondResult = undefined;
+            }
+        });
+    }
 })();

@@ -42,31 +42,13 @@
         </div>
     </div>
 
-    <div ng-controller="MainCtrl as main" class="col-sm-4">
-        <div class="controls" tabindex="0">
-            <form>
-                <div>
-                    <label for="number1">Multiply number 1: </label>
-                    <input type="text" id="number1" value="0">
-                </div>
-                <div>
-                    <label for="number2">Multiply number 2: </label>
-                    <input type="text" id="number2" value="0">
-                </div>
-                <div>
-                    <button ng-click="main.submit()" ng-disabled="main.submitted" ng-class="{submitted: main.submitted}">
-                        <span>Submit</span>
-                    </button>
-                    <span ng-show="main.submitted"><i class="fa fa-spinner fa-spin" style="font-size:30px;color:blue;"></i></span>
-                </div>
-            </form>
-
-            <p class="result">Result: 0</p>
+    <div ng-controller="MainCtrl as main" class="col-sm-4" ng-cloak>
+        <div class="mainControls">
+            <span style="font-size:3vw;color:red;" ng-bind="main.finalResult"></span>
         </div>
     </div>
 
     <div ng-controller="SecondCtrl as second" class="col-sm-4">
-        <!-- <h1>Web<br>Workers<br>basic<br>example</h1> -->
         <div class="controls" tabindex="0">
 
             <form>
