@@ -24,14 +24,25 @@ if (!!window.Worker) {
 
 // console.log(angular.version);
 
+(function() {
+    function getWorker() {
+        return new Worker("angular-worker.js");
+    };
 
-angular.module('app', [])
-    .controller('MainCtrl', function($scope) {
-        $scope.message = 'hello';
-        var myWorker = new Worker("angular-worker.js");
+    angular.module('app', [])
+        .controller('MainCtrl', function($scope) {
+            var myWorker = getWorker();
 
-        $scope.submit = function() {
-            myWorker.postMessage({});
-            console.log('Message posted to worker');
-        };
-    });
+            $scope.submit = function() {
+                $scope.submitted = true;
+                myWorker.postMessage({});
+                console.log('Message posted to worker');
+            };
+
+            myWorker.onmessage = function(e) {
+                $scope.submitted = false;
+                console.log('Message received from worker');
+                $scope.$apply();
+            }
+        });
+})();

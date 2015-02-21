@@ -15,7 +15,6 @@
 
   <body ng-app="app" ng-controller="MainCtrl">
     <!-- <h1>Web<br>Workers<br>basic<br>example</h1> -->
-{{message}}
     <div class="controls" tabindex="0">
 
     <form>
@@ -28,7 +27,7 @@
         <input type="text" id="number2" value="0">
       </div>
       <div>
-        <button ng-click="submit()">Submit</button>
+        <button ng-click="submit()" ng-disabled="submitted" ng-class="{submitted: submitted}">Submit</button>
         </div>
     </form>
 
