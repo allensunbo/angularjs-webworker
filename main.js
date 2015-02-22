@@ -125,6 +125,16 @@ if (!!window.Worker) {
                     handleQuery(promises[i]);
                 }
             };
+        })
+        .controller('WorkerCtrl', function($scope, $q, $timeout) {
+            var myWorker = new Worker('worker.js');
+            var vm = this;
+            var promises = [];
+            vm.doQuery = function() {
+                console.log('doQuery');
+                myWorker.postMessage({
+                });
+            };
         });
 
     function handleQuery(promise) {

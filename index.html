@@ -73,7 +73,13 @@
 
     <div ng-controller="NonWorkerCtrl as nonWorker">
         <button ng-click="nonWorker.doQuery()">
-            <span>Query</span>
+            <span>NonWorker Query</span>
+        </button>
+    </div>
+
+    <div ng-controller="WorkerCtrl as worker">
+        <button ng-click="worker.doQuery()">
+            <span>Worker Query</span>
         </button>
     </div>
 
