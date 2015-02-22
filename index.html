@@ -71,6 +71,12 @@
 
     </div>
 
+    <div ng-controller="NonWorkerCtrl as nonWorker">
+        <button ng-click="nonWorker.doQuery()">
+            <span>Query</span>
+        </button>
+    </div>
+
 </body>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>

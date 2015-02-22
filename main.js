@@ -31,7 +31,7 @@ if (!!window.Worker) {
 
     function compute() {
         console.log('submit clicked');
-        for (var i = 0; i < 10000000; i++) {
+        for (var i = 0; i < 4000000; i++) {
             for (var j = 0; j < 1000; j++) {
                 var p = (i * j) % (i + j);
             }
@@ -111,6 +111,43 @@ if (!!window.Worker) {
             });
 
         })
+        .controller('NonWorkerCtrl', function($scope, $q, $timeout) {
+            var vm = this;
+            var promises = [];
+            vm.doQuery = function() {
+                console.log('doQuery');
+                promises = [];
+                for (var i = 0; i < 10; i++) {
+                    promises.push(query('url-' + i, $q, $timeout));
+                }
+
+                for (var i = 0; i < promises.length; i++) {
+                    handleQuery(promises[i]);
+                }
+            };
+        });
+
+    function handleQuery(promise) {
+        promise.then(function(data) {
+                console.log(data);
+            },
+            function(reason) {
+
+            });
+    }
+
+    function query(_url, $q, $timeout) {
+        var defer = $q.defer();
+        var delay = Math.random() * 5000;
+        $timeout(function() {
+            compute();
+            defer.resolve({
+                url: _url,
+                time: delay
+            });
+        }, delay);
+        return defer.promise;
+    }
 
     // when we reference scope variables, use vm since we use controller as syntax, otherwise it does not work as expected
     // we only use $scope when do $apply
